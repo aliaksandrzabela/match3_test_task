@@ -1,15 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
+using monogame_match3.Match3;
+using monogame_match3.Scenes;
 
 namespace monogame_match3
 {
     public class Match3Game : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<Component> gameComponents;
+        private ScenesModel scenesModel;
 
         public Match3Game()
         {
@@ -21,14 +22,14 @@ namespace monogame_match3
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
             base.Initialize();
+            scenesModel = new(Content);
+            //gameField = new Match3GameField(Content);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
         }
 
@@ -37,7 +38,9 @@ namespace monogame_match3
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            scenesModel.Update(gameTime);
+
+            //gameField.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -46,7 +49,13 @@ namespace monogame_match3
         {
             GraphicsDevice.Clear(Color.Aquamarine);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+            scenesModel.Draw(gameTime, _spriteBatch);
+
+            //gameField.Draw(gameTime, _spriteBatch);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
